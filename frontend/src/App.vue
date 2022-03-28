@@ -1,32 +1,31 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
     <router-view/>
+    <FooterPage/>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import FooterPage from '@/components/Footer.vue'
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+export default {
+  name: "App",
+  components: {
+    FooterPage
   }
+}
+</script>
+
+<style lang="scss">
+* { 
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box;
+  overflow-x: hidden;
+  margin: 0; 
+  padding: 0;
+}
+#app { 
+  font-family: Arial, Helvetica, sans-serif;
+  background: rgb(250, 231, 234);
 }
 </style>

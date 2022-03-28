@@ -1,18 +1,87 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/icon-above-font.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div class="home">
+        <HeaderHome/>
+        <main>
+            <section id="hello">
+                <h1>Bienvenue dans notre réseau social interne</h1>
+            </section>
+
+            <section id="container">
+                <div id="container__auth">
+                    <img src="../assets/icon-above-font.png" alt="Logo Groupomania" />
+                    <div v-if="auth" class="login">
+                        <LoginHome />
+                        <p> Vous n'avez pas de compte ? 
+                            <span @click="auth = !auth">Inscrivez-vous</span>
+                        </p>
+                    </div>
+                    <div v-else class="signup">                        
+                        <SignupHome />
+                        <p> Vous avez un compte ?
+                            <span @click="auth = !auth">Connectez-vous</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HeaderHome from '@/components/HeaderHome.vue'
+import LoginHome from "@/components/Login.vue"
+import SignupHome from "@/components/Signup.vue"
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    HelloWorld
+    HeaderHome,
+    LoginHome,
+    SignupHome
+  },
+  data() {
+    return {
+      auth: true,
+    }
   }
 }
 </script>
+
+<style scoped lang="scss">
+main {
+  padding: 20px;
+  #hello {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background: -webkit-linear-gradient(violet, red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 25px;
+  }
+  #container {
+    display: flex;
+    justify-content: center;
+
+    &__auth {
+      box-shadow: 1px 1px 6px pink;
+      border-radius: 15px;
+      width: 400px;   
+      padding: 10px;
+      margin: 20px 10px;
+      background: white;
+      img {
+        width: 100%;
+      }
+      p {
+          text-align: center;
+          font-size: 12px;
+          span {
+              color: blue;
+              cursor: pointer;
+          }
+      }
+    }
+  }
+}
+</style>
