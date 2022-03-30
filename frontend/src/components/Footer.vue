@@ -27,6 +27,9 @@ footer { display: flex;
     a { 
         text-decoration: none;
         padding: 0 20px;
+        &:hover {
+            opacity: 0.7;
+        }
         
         span {
             font-size: 25px;
