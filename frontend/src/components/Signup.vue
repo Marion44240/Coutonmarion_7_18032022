@@ -1,25 +1,27 @@
 <template>
-  <div class="form">
+  <div class="form-signup">
     <h2>Inscription</h2>
     <form>
       <input type="text"
-              id="username"
               aria-label="username"
               placeholder="Entrez votre pseudo"
               v-model="username"
               required>
-      <input type="text"
-              id="email"
+      <input type="email"
               aria-label="email"
               placeholder="Entre votre email"
               v-model="email"
               required>
-      <input type="text"
-              id="password"
-              aria-label="password"
-              placeholder="Entrez votre mot de passe"
-              v-model="password"
-              required>
+      <div id="password">
+            <input :type="showPassword ? 'text' : 'password'"
+                    aria-label="password"
+                    placeholder="Entrez votre mot de passe"
+                    v-model="password"                
+                    required>
+            <span @click="toggleShow" class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }">
+            </span>
+      </div>
+
       <button aria-label="Inscription" @click="signup()">S'inscrire</button>
     </form>
   </div>
@@ -28,11 +30,25 @@
 <script>
 export default {
   name: "SignupHome",
+  data() {
+      return {
+          password: '',
+          email: '',
+          username: '',
+          showPassword: false
+      }
+  },
+  methods: {
+      toggleShow() {
+          this.showPassword =! this.showPassword;
+      },
+  }
 };
+
 </script>
 
 <style scoped lang="scss">
-.form {
+.form-signup {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -48,29 +64,43 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  input {
-    height: 35px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: none;
-    outline: none;
-    background-color: rgb(250, 231, 234);
-    border-radius: 10px;
-    font-size: 12px;
-  }
-  button {
-    margin-top: 15px;
-    height: 35px;
-    border: none;
-    border-radius: 10px;
-    background: -webkit-linear-gradient(red, violet);
-    cursor: Pointer;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    &:hover {
-            opacity: 0.8;
+    input {
+        width: 100%;
+        height: 35px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: rgb(250, 231, 234);
+        border-radius: 10px;
+        font-size: 12px;
     }
-  }
+    #password {
+        position: relative;   
+        span {
+            position: absolute;
+            right: 20px;
+            top: 8px;
+            opacity: 0.5;
+            cursor: pointer;
+            &:hover {
+                color: red;
+            }
+        }
+    }
+    button {
+        margin: 20px 0;
+        height: 35px;
+        border: none;
+        border-radius: 10px;
+        background: -webkit-linear-gradient(red, violet);
+        cursor: Pointer;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        &:hover {
+            opacity: 0.8;
+        }
+    }
 }
 </style>

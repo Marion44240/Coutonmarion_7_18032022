@@ -1,19 +1,21 @@
 <template>
-<div class="form">
+<div class="form-login">
     <h2>Connexion</h2>
     <form>
-        <input type="text"
-                id="email"
+        <input type="email"
                 placeholder="Entrez votre email" 
                 aria-label="email"
                 v-model="email"
                 required>
-        <input type="text"
-                id="password"
-                aria-label="password"
-                placeholder="Entrez votre mot de passe"
-                v-model="password"
-                required>
+        <div id="password">
+            <input :type="showPassword ? 'text' : 'password'"
+                    aria-label="password"
+                    placeholder="Entrez votre mot de passe"
+                    v-model="password"                
+                    required>
+            <span @click="toggleShow" class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }">
+            </span>
+        </div>
         <button aria-label="connexion" @click="login()">Se connecter</button>
     </form>
 </div>
@@ -21,12 +23,27 @@
 
 <script>
 export default {
-    name: 'LoginHome'
+    name: 'LoginHome',
+    data() {
+        return {
+            email: '',
+            password: '',
+            showPassword: false
+        }
+    },
+    methods: {
+        toggleShow() {
+            this.showPassword =! this.showPassword;
+        },
+        login () {
+            this.$router.push('/forum')
+        }
+    }
 }
 </script>
 
 <style scoped lang="scss">
-.form {
+.form-login {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -43,6 +60,7 @@ form {
   flex-direction: column;
   width: 100%;
     input {
+        width: 100%;
         height: 35px;
         margin-bottom: 10px;
         padding: 10px;
@@ -51,6 +69,19 @@ form {
         background-color: rgb(250, 231, 234);
         border-radius: 10px;
         font-size: 12px;
+    }
+    #password {
+        position: relative;   
+        span {
+            position: absolute;
+            right: 20px;
+            top: 8px;
+            opacity: 0.5;
+            cursor: pointer;
+            &:hover {
+                color: red;
+            }
+        }
     }
     button {
         margin: 20px 0;
