@@ -1,4 +1,3 @@
-require('dotenv').config();
 // Connexion à la base de données MySQL
 const { Sequelize } = require('sequelize');
 
@@ -11,11 +10,5 @@ const sequelize = new Sequelize(
         dialect: 'mysql'
     }
 );
-try {
-    sequelize.authenticate();
-    console.log('Connexion à MySQL réussi !');
-} catch (error) {
-    console.error('Connexion à MySQL échouée !', error);
-}
 
 module.exports = sequelize;

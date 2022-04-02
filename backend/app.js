@@ -6,11 +6,23 @@ const app = express();
 const helmet = require('helmet');
 app.use(helmet());
 
+// Importation module node pour le chemin image
+const path = require('path');
+
 // Importation dotenv (variable d'environement)
 require('dotenv').config();
 
-// Importation MySQL
-const sequelize = require('./config/db.config');
+// Importation routes
+const userRoutes = require('./routes/user');
+
+//Connexion base de donnée
+const db = require('./models');
+try {
+    console.log('Connexion à MySQL réussi !');
+} catch (error) {
+    console.error('Connexion à MySQL échouée !', error);
+}
+db.sequelize.sync();
 
 // CORS, système de sécurité qui bloque les appels HTTP entre des serveurs différents ce qui empêche les requêtes malveillantes d'accéder à des resources sensibles
 const cors = require('cors');
@@ -20,8 +32,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.json({ message: "Bienvenu sur l'application" });
-});
+// Gére les ressources images de façon statique d'une requête vers le dossier Images
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Création et identification utilisateur
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
