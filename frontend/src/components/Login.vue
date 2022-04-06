@@ -36,7 +36,18 @@ export default {
             this.showPassword =! this.showPassword;
         },
         login () {
-            this.$router.push('/forum')
+            this.axios.post('http://localhost:3000/api/auth/login', {
+                email: this.email,
+                password: this.password,
+            }) 
+            .then ((res) => {
+                console.log('Connexion réussi !', res);
+                window.localStorage.setItem('token', res.data.token)
+                this.$router.push('/forum');
+            }) 
+            .catch((error) => {
+                console.log('Utilisateur non trouvé !', error);
+            })
         }
     }
 }

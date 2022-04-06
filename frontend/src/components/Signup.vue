@@ -6,20 +6,24 @@
               aria-label="username"
               placeholder="Entrez votre pseudo"
               v-model="username"
+              pattern="[a-zâäàéèùêëîïôöçñA-Z-0-9\s]{4,25}"
               required>
       <input type="email"
               aria-label="email"
               placeholder="Entre votre email"
               v-model="email"
+              pattern="[a-zâäàéèùêëîïôöçñA-Z0-9.-_]+[@]{1}[a-zA_Z0-9.-_]+[.]{1}[a-z]{2,4}"
               required>
       <div id="password">
             <input :type="showPassword ? 'text' : 'password'"
                     aria-label="password"
                     placeholder="Entrez votre mot de passe"
-                    v-model="password"                
+                    v-model="password"
+                    pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d{2,25}).{8,15}"                
                     required>
             <span @click="toggleShow" class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }">
             </span>
+            <div id="error">{{ error }}</div>
       </div>
 
       <button aria-label="Inscription" @click="signup()">S'inscrire</button>
@@ -35,6 +39,7 @@ export default {
           password: '',
           email: '',
           username: '',
+          error: '',
           showPassword: false
       }
   },
@@ -42,6 +47,26 @@ export default {
       toggleShow() {
           this.showPassword =! this.showPassword;
       },
+      signup () {
+          if (this.email == '' || this.username == '' || this.password == '') {
+              return this.error = 'Veuillez renseigner tous les champs du formulaire dans un format conforme. Votre pseudo doit comprendre 4 caractères min, votre mail doit étre valide ex:groupomania@email.com'
+          } 
+          else {
+              this.axios.post('http://localhost:3000/api/auth/signup', {
+              username: this.username,
+              email: this.email,
+              password: this.password
+          })
+          .then((res) => {
+              console.log('Utilisateur créé !', res);
+              alert('Inscription réussi');
+              this.$router.push('/')
+          })
+          .catch((error) => {
+              this.error = error.response.data.message
+          });
+          }
+      }
   }
 };
 
@@ -86,6 +111,10 @@ form {
             &:hover {
                 color: red;
             }
+        }
+        #error {
+        font-size: 10px;
+        color: red;
         }
     }
     button {
