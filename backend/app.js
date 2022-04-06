@@ -9,9 +9,6 @@ app.use(helmet());
 // Importation module node pour le chemin image
 const path = require('path');
 
-// Importation dotenv (variable d'environement)
-require('dotenv').config();
-
 // Importation routes
 const userRoutes = require('./routes/user');
 
