@@ -11,6 +11,7 @@ const path = require('path');
 
 // Importation routes
 const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
 
 //Connexion base de donnée
 const db = require('./models');
@@ -34,5 +35,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Création et identification utilisateur
 app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
 
 module.exports = app;
