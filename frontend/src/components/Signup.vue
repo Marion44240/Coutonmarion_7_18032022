@@ -60,7 +60,7 @@ export default {
           .then((res) => {
               console.log('Utilisateur créé !', res);
               alert('Inscription réussi');
-              this.$router.push('/')
+              window.location.reload();
           })
           .catch((error) => {
               this.error = error.response.data.message
