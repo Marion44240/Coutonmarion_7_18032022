@@ -1,7 +1,7 @@
 <template>
 <div class="form-login">
     <h2>Connexion</h2>
-    <form>
+    <form @submit="login">
         <input type="email"
                 placeholder="Entrez votre email" 
                 aria-label="email"
@@ -16,7 +16,7 @@
             <span @click="toggleShow" class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }">
             </span>
         </div>
-        <button aria-label="connexion" @click="login()">Se connecter</button>
+        <button aria-label="connexion" type="submit">Se connecter</button>
     </form>
 </div>
 </template>
@@ -35,19 +35,22 @@ export default {
         toggleShow() {
             this.showPassword =! this.showPassword;
         },
-        login () {
+        login (e) {
             this.axios.post('http://localhost:3000/api/auth/login', {
                 email: this.email,
                 password: this.password,
             }) 
             .then ((res) => {
                 console.log('Connexion réussi !', res);
-                window.localStorage.setItem('token', res.data.token)
+                window.localStorage.setItem('token', res.data.token);
+                window.localStorage.setItem('username', res.data.username);
+                window.localStorage.setItem('userId', res.data.userId);
                 this.$router.push('/forum');
             }) 
             .catch((error) => {
                 console.log('Utilisateur non trouvé !', error);
             })
+            e.preventDefault();
         }
     }
 }
