@@ -23,8 +23,19 @@ try {
 db.sequelize.sync();
 
 // CORS, système de sécurité qui bloque les appels HTTP entre des serveurs différents ce qui empêche les requêtes malveillantes d'accéder à des resources sensibles
-const cors = require('cors');
-app.use(cors());
+app.use((req, res, next) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');  
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
+});
+
+// CORS, pour autoriser les images
+app.use((req, res, next) => {
+    res.removeHeader('Cross-Origin-Resource-Policy');
+    next();
+});
 
 // Analyse le corps de la requête
 app.use(express.json());
