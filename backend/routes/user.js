@@ -4,12 +4,16 @@ const router = express.Router();
 
 // Importation du fichier controllers User
 const userCtrl = require('../controllers/user');
-// Importation password-validator
+// Importation password-validator, auth et multer
 const password = require('../middleware/password');
+const auth = require('../middleware/auth');
+const multer = require('../middleware/multer')
 
-// route POST pour enregistrer un nouvel utilisateur
+// routes
 router.post('/signup', password, userCtrl.signup);
-// route POST pour la connection d'un utilisateur
 router.post('/login', userCtrl.login);
+router.get('/:id', userCtrl.getUser)
+router.put('/:id', auth, multer, userCtrl.updateUser);
+router.delete('/:id', auth, userCtrl.deleteUser);
 
 module.exports = router;

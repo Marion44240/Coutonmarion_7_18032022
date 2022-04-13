@@ -14,9 +14,18 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    avatar: {
+      type: Sequelize.STRING,
+    }
   }, 
   {
     tableName: 'User',
   });
+  User.associate = models => {
+    User.hasMany(models.Post, {
+      onDelete: 'cascade',
+      foreignKey: 'userId',
+    })
+  }
   return User;
 }; 
