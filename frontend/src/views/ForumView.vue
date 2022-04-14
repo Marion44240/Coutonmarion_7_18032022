@@ -10,18 +10,23 @@
         <div id="container__forum">
 
           <div id="container__publish">
-            <form>
-              <img src="../assets/avatar.png" alt="Photo de profil utilisateur">
-              <input type="text" placeholder="Créez une publication...">
-              <div id="button">
-                <button>Choisir une image</button>
-                <button>Publier !</button>
+            <form id="publish">
+              <img src="../assets/avatar.png" alt="Photo de profil utilisateur">   
+              <div id="publish__description">
+                <input v-model="description" type="text" placeholder="Créez une publication...">
+              </div>
+              <div id="publish__button">
+                <button type="file" ref="file" id="file" @change="selectFile()"></button>
+                <button @click="publish()">Publier !</button>
               </div>         
             </form>
           </div>
 
           <div id="container__post">
             <h2>Fil d'actualité</h2>
+          </div>
+          <div id="post">
+            Voici les posts
           </div>
         </div>
       
@@ -37,7 +42,37 @@ export default {
   name: 'ForumView',
   components: {
     HeaderForum
-  }
+  },
+  data() {
+    return {
+      userId: localStorage.getItem('userId'),
+      username: localStorage.getItem('username'),
+      description: '',
+      file: '',
+    }
+  },
+  methods: {
+    selectFile() {
+      this.file = this.$refs.file.files[0]
+    },
+    publish() {
+      const data = new FormData();   
+      data.append('userId', this.userId);
+      data.append('description', this.description);
+      data.append('image', this.file, this.file.name)
+      
+      this.axios.post('http://localhost:3000/api/post/', data, {
+        headers: {
+          Authorization: 'Bearer' + localStorage.getItem('token')
+        }
+      })
+      .then(() => {
+        window.location.reload();
+      }).catch((err) => {
+        console.log(err, 'le poste n\'a pas pu être créer !')
+      });
+    }
+  },
 }
 </script>
 
@@ -68,31 +103,45 @@ main {
       margin: 20px 10px;
       background: white;
     }
-    &__publish {   
+    &__publish {  
+      display: flex; 
+      flex-wrap: wrap;
       border-radius: 5px;
       padding: 15px;
       margin: 10px;
+      width: 95%;
       background: linear-gradient(violet, red);
 
-      form {
+      #publish {
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
+        align-items: center;
+        gap: 15px; 
         img {
-          width: 12%;
+          flex: 1;
         }
-        input {
-          width: 65%;
-          outline: none;
-          padding: 15px;
+        &__description {
+          flex: 3;
+          height: 90%;
+          input {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            padding: 10px;
+          }
         }
-        #button {
+        &__button {
           display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          width: 12%;
-          
+          flex: 1;
+          flex-wrap: wrap;
+          gap: 20px;
+          button {
+            height: 40px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+          }
         }
       }
     }

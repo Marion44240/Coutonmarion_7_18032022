@@ -50,6 +50,9 @@ export default {
 <style scoped lang="scss">
 main {
   padding: 20px;
+  @media screen and (max-width: 500px){
+      padding: 5px;
+    }
   #hello {
     display: flex;
     text-align: center;
@@ -58,6 +61,10 @@ main {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 25px;
+    @media screen and (max-width: 500px){
+      font-size: 15px;
+      padding: 10px;
+    }
   }
   #container {
     display: flex;
@@ -70,6 +77,9 @@ main {
       padding: 10px;
       margin: 20px 10px;
       background: white;
+      @media screen and (max-width: 500px){
+        margin: 5px 5px 20px ;
+      }
       img {
         width: 100%;
       }

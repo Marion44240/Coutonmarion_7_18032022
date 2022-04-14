@@ -2,8 +2,9 @@
   <header class="header-forum">
     <img src="../assets/Logo-groupomania.png" alt="Logo Groupomania" />
     <nav id="navbar">
-      <img @click="profil" src="../assets/avatar.png" alt="Boutton de profil">
-      <img @click="logout" src="../assets/logout.png" alt="Boutton de déconnexion">
+      <img @click="profil" src="../assets/avatar.png" alt="Bouton de profil">
+      <img @click="home" src="../assets/home.webp" alt="Bouton du forum">
+      <img @click="logout" src="../assets/logout.png" alt="Bouton de déconnexion">
     </nav>
   </header>
 </template>
@@ -15,6 +16,12 @@ export default {
     logout() {
       localStorage.clear();
       this.$router.push('/');
+    },
+    profil() {
+      this.$router.push('/profil');
+    },
+    home() {
+      this.$router.push('/forum');
     }
   },
 };

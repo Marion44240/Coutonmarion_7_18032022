@@ -7,22 +7,29 @@
             </section>
 
             <section id="container">
+
                 <div id="container__profil">
-                    <img :src="avatar" alt="avatar utilisateur">
-                    <label for="file">Modifier votre avatar :</label>
-                    <input v-on:change="selectFile" name="file" type="file" accept="avatar/*">
+                    <img :src="avatar" id="avatar" alt="avatar utilisateur">
+                    <label for="file" id="label">Modifier ma photo</label>
+                    <input v-on:change="selectFile" id="file" name="file" type="file" accept="avatar/*">
+
                     <div id="container__form">
                         <p>Vos informations</p>
-                            <label for="pseudo">Pseudo :
-                                <input type="text" name="pseudo" id="pseudo" v-model="username">
-                            </label>
-                            <label for="email">Email :
-                                <input type="email" name="email" id="email" v-model="email">
-                            </label>
-                        <button @click="updateUser()">Modifier mes informations</button>
-                        <button @click="deleteUser()">Supprimer mon compte</button>
-                    </div>           
+                        <div id="form">
+                            <label for="pseudo">Pseudo :</label>
+                            <input type="text" name="pseudo" id="pseudo" v-model="username">
+                            <label for="email">Email :</label>
+                            <input type="email" name="email" id="email" v-model="email">
+                            <div id="error">{{ error }}</div>
+                        </div>
+                        <div id="button">
+                            <button @click="updateUser()">Modifier mes informations</button>
+                            <button @click="deleteUser()">Supprimer mon compte</button>
+                        </div>
+                    </div>
+
                 </div>
+
             </section>
         </main>
     </div>
@@ -40,6 +47,9 @@ export default {
             username: '',
             email: '',
             avatar: '',
+            error: '',
+            regexUsername: /[a-zâäàéèùêëîïôöçñA-Z-0-9\s]{4,25}/,
+            regexEmail: /[a-zâäàéèùêëîïôöçñA-Z0-9.-_]+[@]{1}[a-zA_Z0-9.-_]+[.]{1}[a-z]{2,4}/
         }
     },
     mounted() {
@@ -80,15 +90,25 @@ export default {
         },
 
         updateUser() {
-            const id = localStorage.getItem('userId')
-            const data = new FormData();
-            data.append('email', this.email);
-            data.append('username', this.username);
-            this.axios.put(`http://localhost:3000/api/auth/${id}`, data, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
+            if (this.username == '' || this.email == '') {
+                return this.error ='Veuillez renseigner tous les champs du formulaire !'
+            } 
+            else if (!this.regexUsername.test(this.username)){
+                return this.error ='pseudo non conforme !'
+            } 
+            else if (!this.regexEmail.test(this.email)){
+                return this.error ='email non conforme !'
+            }
+            else {
+                const id = localStorage.getItem('userId')
+                const data = new FormData();
+                data.append('email', this.email);
+                data.append('username', this.username);
+                this.axios.put(`http://localhost:3000/api/auth/${id}`, data, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
             .then((res) => {
                 this.uersname = res.data.username,
                 this.email = res.data.email,
@@ -97,6 +117,7 @@ export default {
             .catch((err) => {
                 console.log(err)
             });
+            }
         },
 
         deleteUser() {
@@ -122,6 +143,9 @@ export default {
 <style lang="scss" scoped>
 main {
   padding: 20px;
+  @media screen and (max-width: 450px) {
+      padding: 20px 0;   
+  }
   #hello {
     display: flex;
     text-align: center;
@@ -129,7 +153,10 @@ main {
     background: -webkit-linear-gradient(violet, red);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 20px;
+    font-size: 18px;
+    @media screen and (max-width: 450px) {
+        font-size: 15px;     
+    }
   }
   #container {
     display: flex;
@@ -145,7 +172,41 @@ main {
         padding: 15px;
         margin: 20px 10px;
         background: white;
-        img { width: 40%; }
+        @media screen and (max-width: 770px) {
+            width: 80%;
+        }
+        @media screen and (max-width: 450px) {
+            width: 100%;
+        }
+        #avatar {
+            border-radius: 50%;
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            padding: 10px;
+            border: 1px dotted violet;
+            @media screen and (max-width: 550px) {
+                width: 200px;
+                height: 200px;
+            }
+        }
+        #file {
+            display: none;
+        }
+        #label {
+            cursor: pointer;
+            border: 1px dotted red;
+            padding: 8px;
+            background: rgb(250, 231, 234);
+            margin: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: rgb(231, 75, 101);
+            &:hover {
+                box-shadow: 2px 3px 4px violet;
+                transition: all 0.3s;
+            }
+        }
     }
 
     &__form {
@@ -154,10 +215,75 @@ main {
         align-items: center;
         padding: 15px;
         margin: 10px;
-        width: 95%;
+        width: 80%;
+        gap: 10px;
         background: linear-gradient(violet, red);
         border-radius: 5px;
+        @media screen and (max-width: 500px) {
+            width: 100%;
+        }
+        p {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+        }
+        #form {
+            display: flex;
+            flex-direction: column;
+            padding: 0px 10px;
+            width: 90%;
+            gap: 5px;
+            @media screen and (max-width: 500px) {
+                width: 100%;
+            }
+            label {
+               font-size: 14px;
+               color: white;
+               text-shadow: 1px 2px 2px black;
+            }
+            input {
+                outline: none;
+                border: none;
+                padding: 7px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                color: rgb(231, 75, 101);
+                background-color: rgb(250, 231, 234);
+            }
+            #error {
+                display: flex;
+                justify-content: center;
+                font-size: 10px;
+            }
+        }
+        #button {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            @media screen and (max-width: 500px) {
+                width: 100%;
+            }   
+            button {
+                cursor: pointer;
+                border: 1px dotted red;
+                padding: 8px;
+                background: rgb(250, 231, 234);
+                margin: 10px;
+                font-weight: bold;
+                font-size: 13px;
+                color: rgb(231, 75, 101);
+                &:hover {
+                    box-shadow: 2px 3px 4px violet;
+                    transition: all 0.2s;
+                }
+            }
+        }
     }
   }
 }
+
 </style>
