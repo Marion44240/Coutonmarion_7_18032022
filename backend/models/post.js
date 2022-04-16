@@ -12,6 +12,12 @@ module.exports = (sequelize, Sequelize) => {
   }, 
   {
     tableName: 'Post',
-  });
+    });
+  Post.associate = models => {
+    Post.belongsTo(models.User, {
+      onDelete: 'cascade',
+      foreignKey: 'userId',
+    })
+  }
   return Post;
 }; 
