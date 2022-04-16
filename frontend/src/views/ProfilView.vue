@@ -9,7 +9,7 @@
             <section id="container">
 
                 <div id="container__profil">
-                    <img :src="avatar" id="avatar" alt="avatar utilisateur">
+                    <img :src="avatar" id="avatar" alt="avatar">
                     <label for="file" id="label">Modifier ma photo</label>
                     <input v-on:change="selectFile" id="file" name="file" type="file" accept="avatar/*">
 
@@ -185,6 +185,7 @@ main {
             object-fit: cover;
             padding: 10px;
             border: 1px dotted violet;
+            color: white;
             @media screen and (max-width: 550px) {
                 width: 200px;
                 height: 200px;
