@@ -14,7 +14,7 @@
                     <input v-on:change="selectFile" id="file" name="file" type="file" accept="avatar/*">
 
                     <div id="container__form">
-                        <p>Vos informations</p>
+                        <h2>Vos informations</h2>
                         <div id="form">
                             <label for="pseudo">Pseudo :</label>
                             <input type="text" name="pseudo" id="pseudo" v-model="username">
@@ -91,13 +91,13 @@ export default {
 
         updateUser() {
             if (this.username == '' || this.email == '') {
-                return this.error ='Veuillez renseigner tous les champs du formulaire !'
+                return this.error ='⚠ Veuillez renseigner tous les champs du formulaire !'
             } 
             else if (!this.regexUsername.test(this.username)){
-                return this.error ='pseudo non conforme !'
+                return this.error ='⚠ pseudo non conforme !'
             } 
             else if (!this.regexEmail.test(this.email)){
-                return this.error ='email non conforme !'
+                return this.error ='⚠ email non conforme !'
             }
             else {
                 const id = localStorage.getItem('userId')
@@ -196,13 +196,13 @@ main {
         }
         #label {
             cursor: pointer;
-            border: 1px dotted red;
+            border: 1px dotted #94142A;
             padding: 8px;
             background: rgb(250, 231, 234);
             margin: 10px;
             font-weight: bold;
             font-size: 14px;
-            color: rgb(231, 75, 101);
+            color: #94142A;
             &:hover {
                 box-shadow: 2px 3px 4px violet;
                 transition: all 0.3s;
@@ -223,7 +223,7 @@ main {
         @media screen and (max-width: 500px) {
             width: 100%;
         }
-        p {
+        h2 {
             display: flex;
             justify-content: center;
             width: 90%;
@@ -252,7 +252,7 @@ main {
                 padding: 7px;
                 border-radius: 8px;
                 margin-bottom: 8px;
-                color: rgb(231, 75, 101);
+                color: #94142A;
                 background-color: rgb(250, 231, 234);
             }
             #error {
@@ -270,13 +270,13 @@ main {
             }   
             button {
                 cursor: pointer;
-                border: 1px dotted red;
+                border: 1px dotted #94142A;
                 padding: 8px;
                 background: rgb(250, 231, 234);
                 margin: 10px;
                 font-weight: bold;
                 font-size: 13px;
-                color: rgb(231, 75, 101);
+                color: #94142A;
                 &:hover {
                     box-shadow: 2px 3px 4px violet;
                     transition: all 0.2s;

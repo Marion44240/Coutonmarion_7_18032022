@@ -18,7 +18,7 @@
               </div>
 
               <div id="publish__description">
-                <input v-model="description" type="text" placeholder="Créez une publication...">
+                <input v-model="description" type="text" aria-label="description" placeholder="Créez une publication...">
               </div>     
 
               <div id="publish__button">
@@ -34,7 +34,7 @@
           <div id="container__post">
             <h2>Fil d'actualité</h2>
           </div>
-          
+
           <ListPost />
 
         </div>
@@ -61,6 +61,7 @@ export default {
       description: '',
       image: '',
       viewImage: '',
+      error:''
     }
   },
   mounted() {
@@ -85,22 +86,27 @@ export default {
       this.viewImage = URL.createObjectURL(this.image);
     },
     publish() {
-      const data = new FormData();
-      data.append('userId', localStorage.getItem('userId'));
-      data.append('description', this.description);
-      data.append('image', this.image);
-      this.axios.post('http://localhost:3000/api/post', data, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      })
-      .then((res) => {
-        console.log('Publication créée', res);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.description.length <= 4 && this.image === '') {
+        alert('Aucun contenu à publier !')
+      } 
+      else {
+        const data = new FormData();
+        data.append('userId', localStorage.getItem('userId'));
+        data.append('description', this.description);
+        data.append('image', this.image);
+        this.axios.post('http://localhost:3000/api/post', data, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then((res) => {
+          console.log('Publication créée', res);
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
     }
   }
 }
@@ -184,7 +190,7 @@ main {
             background: rgb(250, 231, 234);
             font-weight: bold;
             font-size: 14px;
-            color: rgb(231, 75, 101);
+            color: #94142A;
             border-radius: 5px;
             &:hover {
               opacity: 0.8;
