@@ -23,7 +23,7 @@ exports.getOnePost = (req, res, next) => {
 
 exports.getAllPost = (req, res, next) => {
     db.Post.findAll({
-        order: [["createAt", "DESC"]],
+        order: [["createdAt", "DESC"]],
         include: [{
             model: db.User
         }]
