@@ -13,7 +13,8 @@
             <form id="publish">
 
               <div id="publish__user">
-                <img :src="avatar" id="avatar" alt="avatar"> 
+                <img v-if="avatar != ''" :src="avatar" class="avatar" alt="photo de profil"> 
+                <img v-else src="../assets/avatar.png" class="avatar" alt="avatar">
                 <p id="name">{{ username }}</p>
               </div>
 
@@ -153,7 +154,7 @@ main {
           display: flex;
           align-items: center;
           gap: 10px;
-          #avatar {
+          .avatar {
             border-radius: 50%;
             width: 50px;
             height: 50px;

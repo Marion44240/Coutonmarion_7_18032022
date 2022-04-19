@@ -9,7 +9,8 @@
             <section id="container">
 
                 <div id="container__profil">
-                    <img :src="avatar" id="avatar" alt="avatar">
+                    <img v-if="avatar != ''" :src="avatar" class="avatar" alt="photo de profil">
+                    <img v-else src="../assets/avatar.png" class="avatar" alt="avatar">
                     <label for="file" id="label">Modifier ma photo</label>
                     <input v-on:change="selectFile" id="file" name="file" type="file" accept="avatar/*">
 
@@ -178,7 +179,7 @@ main {
         @media screen and (max-width: 450px) {
             width: 100%;
         }
-        #avatar {
+        .avatar {
             border-radius: 50%;
             width: 260px;
             height: 260px;
