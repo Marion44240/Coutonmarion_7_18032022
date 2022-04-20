@@ -32,6 +32,7 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
               userId: user.id,
+              isAdmin: user.isAdmin,
               username: user.username,
               token: jwt.sign(
                 { userId: user.id },
@@ -69,7 +70,7 @@ exports.deleteUser = (req, res, next) => {
     .then((user) => {
       const filename = user.avatar.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
-        db.User.destroy({ where: { id: req.params.id } })
+        user.destroy()
           .then(res.status(200).json({ message: "Votre profil est supprimé !" }))
           .catch((error) => res.status(400).json({ error }))
       })

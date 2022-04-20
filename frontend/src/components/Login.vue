@@ -45,6 +45,7 @@ export default {
                 window.localStorage.setItem('token', res.data.token);
                 window.localStorage.setItem('username', res.data.username);
                 window.localStorage.setItem('userId', res.data.userId);
+                window.localStorage.setItem('isAdmin', res.data.isAdmin);
                 this.$router.push('/forum');
             }) 
             .catch((error) => {

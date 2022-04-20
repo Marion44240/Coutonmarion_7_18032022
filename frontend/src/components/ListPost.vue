@@ -3,21 +3,20 @@
       <div id="post" v-for="post in posts" :key="post.id">
             <div id="post__container">
                 <div id="post__user">
-                    <img :src="post.User.avatar" alt="avatar">
+                    <img v-if="post.User.avatar != ''" :src="post.User.avatar" alt="avatar">
+                    <img v-else src="../assets/avatar.png" alt="avatar">
                     <div id="info">
                         <p id="name">{{ post.User.username }}</p>
                         <p id="date">{{ dateFormat(post.createdAt) }}</p>
                     </div>
                 </div>
                 <div id="post__button">
-                    <button aria-label="supprimer post">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                        <i class="fa fa-trash" v-if="post.userId == userId || isAdmin == 'true'" @click="deletePost(post.id)" aria-label="supprimer post"></i>
                 </div>
              </div>
             <div id="post__description">
                 <p>{{ post.description }}</p>
-                <img :src="post.image" alt="image du post">
+                <img v-if="post.image != ''" :src="post.image" alt="image du post">
             </div>
       </div>
   </div>
@@ -30,6 +29,7 @@ export default {
     data() {
         return {
             userId: localStorage.getItem('userId'),
+            isAdmin: localStorage.getItem('isAdmin'),
             avatar: '',
             posts: [],
             post: '',
@@ -54,6 +54,20 @@ export default {
     methods: {
         dateFormat(date) {
             return moment(date).format('DD/MM/YY à HH:mm')
+        },
+        deletePost(id) {
+            this.axios.delete('http://localhost:3000/api/post/' + id, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+            .then(() => {
+                alert('Votre publication est supprimé !');
+                window.location.reload()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     },
 }
@@ -98,14 +112,11 @@ export default {
             } 
         }
         &__button {
-            button {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                border: none;
+            i{
                 cursor: pointer;
-                i{
-                    color: #94142A;
+                color: #94142A;
+                &:hover {
+                    color:rgb(250, 231, 234)
                 }
             }
         }
