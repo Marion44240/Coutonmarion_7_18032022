@@ -3,7 +3,9 @@
     <HeaderForum/>
     <main>
       <section id="hello">
-        <h1>Bonjour {{ username }}, ici vous pouvez poster et suivre notre fil d'actualité.</h1>
+        <h1>Bonjour {{ username }}, <br/>
+          ici vous pouvez poster et suivre notre fil d'actualité.
+        </h1>
       </section>
 
       <section id="container">
@@ -61,8 +63,7 @@ export default {
       avatar: '',
       description: '',
       image: '',
-      viewImage: '',
-      error:''
+      viewImage: ''
     }
   },
   mounted() {
@@ -123,7 +124,7 @@ main {
     background: -webkit-linear-gradient(violet, red);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 15px;
+    font-size: 18px;
   }
   #container {
     display: flex;
@@ -208,6 +209,11 @@ main {
           }
         }
       }
+    }
+    &__post {
+      background: -webkit-linear-gradient(violet, red);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 }
