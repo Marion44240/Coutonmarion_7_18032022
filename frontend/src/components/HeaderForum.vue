@@ -67,6 +67,7 @@ header {
   height: 30px;
   gap: 15px;
   margin-right: 10px;
+  @media screen and (max-width: 400px) { gap: 5px; }
   img {
     width: 30px;
     height: 30px;

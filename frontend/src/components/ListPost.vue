@@ -186,6 +186,9 @@ export default {
 <style lang="scss" scoped>
 .viewFil {
     width: 80%;
+    @media screen and (max-width: 680px) {
+        width: 95%;     
+    }
     #post {
         display: flex;
         flex-direction: column;
@@ -193,6 +196,9 @@ export default {
         padding: 15px 25px;
         margin: 25px 0;
         background: linear-gradient(violet, red);
+        @media screen and (max-width: 450px) {
+            padding: 10px;     
+        }
         &__container {
             display: flex;
             justify-content: space-between;
@@ -235,6 +241,9 @@ export default {
             border-radius: 5px;
             padding: 10px;
             font-style: italic;
+            @media screen and (max-width: 450px) {
+                font-size: 14px;     
+            }
             img{
                 margin-top: 10px;
                 width: 100%;
@@ -245,6 +254,9 @@ export default {
         &__comment {
             display: flex;
             justify-content: flex-end;
+            @media screen and (max-width: 450px) {
+                justify-content: space-between;     
+            }
             #viewComment {
                 margin: 8px;
                 color: rgb(250, 231, 234);
@@ -264,6 +276,9 @@ export default {
                 font-size: 14px;
                 color: #94142A;
                 border-radius: 5px;
+                @media screen and (max-width: 450px) {
+                    font-size: 12px;     
+                }
                 &:hover {
                     opacity: 0.8;
                 }
@@ -274,6 +289,9 @@ export default {
             margin: 5px 20px;
             padding: 10px;
             border-radius: 5px;
+            @media screen and (max-width: 550px) {
+                margin: 5px 0px;   
+            }
             &__user {
                 display: flex;
                 align-items: center;
@@ -327,6 +345,9 @@ export default {
                 background: linear-gradient(rgb(239, 157, 239), rgb(248, 68, 68));
                 margin: 10px 20px 0 20px;
                 padding: 10px;
+                @media screen and (max-width: 550px) {
+                    margin: 5px 0;     
+                }
             }
             &__user {
                 display: flex;

@@ -117,6 +117,7 @@ export default {
 <style lang="scss" scoped>
 main {
   padding: 20px;
+  @media screen and (max-width: 400px) { padding: 20px 5px; }
   #hello {
     display: flex;
     text-align: center;
@@ -125,6 +126,9 @@ main {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 18px;
+    @media screen and (max-width: 450px) {
+        font-size: 13px;     
+    }
   }
   #container {
     display: flex;
@@ -139,6 +143,12 @@ main {
       width: 60%;   
       margin: 20px 10px;
       background: white;
+      @media screen and (max-width: 860px) { 
+        width: 80%; 
+      }
+      @media screen and (max-width: 550px) {
+        width: 100%;   
+      }
     }
     &__publish {  
       border-radius: 5px;
@@ -146,11 +156,14 @@ main {
       margin: 25px 0;
       width: 80%;
       background: linear-gradient(violet, red);
+      @media screen and (max-width: 680px) {
+        width: 95%;
+      }
+      @media screen and (max-width: 540px) { padding: 10px; }
 
       #publish {
         display: flex;
         flex-direction: column;
-
         &__user {
           display: flex;
           align-items: center;
@@ -194,6 +207,9 @@ main {
             font-size: 14px;
             color: #94142A;
             border-radius: 5px;
+            @media screen and (max-width: 450px) {
+              font-size: 12px;     
+            }
             &:hover {
               opacity: 0.8;
             }
@@ -214,6 +230,9 @@ main {
       background: -webkit-linear-gradient(violet, red);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      @media screen and (max-width: 450px) {
+        font-size: 13px;     
+      }
     }
   }
 }
