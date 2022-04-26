@@ -19,7 +19,8 @@
                 <img v-if="post.image != ''" :src="post.image" alt="image du post">
             </div>
             <div id="post__comment">
-                <p id="viewComment" @click="viewComment()">Voir les commentaires</p>             
+                <p id="viewComment" @click="viewComment()" v-if="toClickComment === true">Voir les commentaires</p>
+                <p id="viewComment" @click="hideComment()" v-else>Cacher les commentaires</p>             
                 <button id="newComment" @click="show()">Commenter</button>     
             </div>
 
@@ -37,21 +38,25 @@
                 </form>               
             </div>
 
-            <div id="viewComment__comment" v-for="comment in comments" :key="comment.id">                   
-                <div id="viewComment__user" :showComment="showComment">
-                    <img v-if="comment.User.avatar" :src="comment.User.avatar" alt="photo de profil">
-                    <img v-else src="../assets/avatar.png" alt="avatar">
-                    <div id="viewComment__content">
-                        <p id="name">{{ comment.User.username }}</p>
-                        <p id="content">{{ comment.content }}</p>                              
+            <div id="viewComment" v-if="toSeeComment === true">
+                <div id="viewComment__comment" v-for="comment in comments" :key="comment.id">                   
+                    <div id="viewComment__user">
+                        <img v-if="comment.User.avatar" :src="comment.User.avatar" alt="photo de profil">
+                        <img v-else src="../assets/avatar.png" alt="avatar">
+                        <div id="viewComment__content">
+                            <p id="name">{{ comment.User.username }}</p>
+                            <p id="content">{{ comment.content }}</p>                              
+                        </div>
+                    </div>                   
+                    <div id="viewComment__info">
+                        <p id="date">{{ dateFormat(comment.createdAt) }}</p> 
+                        <i class="fa fa-trash" v-if="comment.userId == userId || isAdmin == 'true'" @click="deleteComment(comment.id)" aria-label="supprimer comment"></i>     
                     </div>
-                </div>                   
-                <div id="viewComment__info">
-                    <p id="date">{{ dateFormat(comment.createdAt) }}</p> 
-                    <i class="fa fa-trash" v-if="comment.userId == userId || isAdmin == 'true'" @click="deleteComment(comment.id)" aria-label="supprimer comment"></i>     
                 </div>
-            </div>
+                <p id="noPublish__comment" v-if="toSeeComment === true && comments.length === 0">Aucun commentaire !</p>
+            </div>        
         </div>
+        <p id="noPublish__post" v-if="posts.length === 0">Aucune publication à afficher... A vous de jouer !</p>
     </div>
 </template>
 
@@ -73,7 +78,8 @@ export default {
             comment: '',
             content: '',
             isDisplay: false,
-            showComment: false,
+            toSeeComment: false,
+            toClickComment: true,
         }
     },
     mounted() {
@@ -136,7 +142,7 @@ export default {
                 this.axios.post('http://localhost:3000/api/comment/', {
                     userId: this.userId,
                     content: this.content,
-                    postId : id
+                    postId: id
                 }, 
                 { 
                     headers: {
@@ -174,10 +180,16 @@ export default {
             })
             .then((res) => {
                 this.comments = res.data;
+                this.toClickComment = false
+                this.toSeeComment = true
             })
             .catch((err) => {
                 console.log(err)
             })
+        },
+        hideComment(){
+            this.toSeeComment = false
+            this.toClickComment = true
         }
     },
 }
@@ -265,6 +277,9 @@ export default {
                 text-shadow: 1px 2px 4px #69101f;
                 border-bottom: 1px dotted white;
                 cursor: pointer;
+                @media screen and (max-width: 380px) {
+                    font-size: 12px;     
+                }
             }
             #newComment {
                 cursor: pointer;
@@ -392,8 +407,28 @@ export default {
                         color: white;
                     }
                 }
-            }
+            }          
         }
-    }    
+    }
+    #noPublish { 
+        &__comment {
+            display: flex;
+            justify-content: center; 
+            padding: 10px; 
+            margin-top: 5px;
+            border: 1px solid white; 
+        }
+        &__post {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            margin: 30px;
+            font-style: italic;
+            color: #94142A;
+            border-radius: 5px;
+            box-shadow: 1px 1px 6px rgb(231, 75, 101);
+            border: 1px solid violet;
+        }
+    }  
 }
 </style>
