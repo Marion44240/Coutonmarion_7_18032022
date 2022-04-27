@@ -21,25 +21,25 @@
             <div id="post__comment">
                 <p id="viewComment" @click="viewComment()" v-if="toClickComment === true">Voir les commentaires</p>
                 <p id="viewComment" @click="hideComment()" v-else>Cacher les commentaires</p>             
-                <button id="newComment" @click="show()">Commenter</button>     
+                <button id="newComment" @click="show(post)">Commenter</button>     
             </div>
 
-            <div id="comment" v-if="isDisplay">
+            <div id="comment" v-if="post.isDisplay">
                 <div id="comment__user">
                     <img v-if="avatar != ''" :src="avatar" class="avatar" alt="photo de profil"> 
                     <img v-else src="../assets/avatar.png" class="avatar" alt="avatar">
                     <p id="name">{{ username }}</p>
                 </div>
                 <form id="comment__content">
-                    <input v-model="content" type="text" aria-label="commentaire" placeholder="Votre commentaire...">
-                    <button @click="createComment(post.id)" aria-label="publier commentaire">
+                    <input v-model="post.commentContent" type="text" aria-label="commentaire" placeholder="Votre commentaire...">
+                    <button @click="createComment(post)" aria-label="publier commentaire">
                         <i class="far fa-paper-plane"></i>
                     </button>
                 </form>               
             </div>
 
             <div id="viewComment" v-if="toSeeComment === true">
-                <div id="viewComment__comment" v-for="comment in comments" :key="comment.id">                   
+                <div id="viewComment__comment" v-for="comment in post.Comments" :key="comment.id">                   
                     <div id="viewComment__user">
                         <img v-if="comment.User.avatar" :src="comment.User.avatar" alt="photo de profil">
                         <img v-else src="../assets/avatar.png" alt="avatar">
@@ -53,7 +53,7 @@
                         <i class="fa fa-trash" v-if="comment.userId == userId || isAdmin == 'true'" @click="deleteComment(comment.id)" aria-label="supprimer comment"></i>     
                     </div>
                 </div>
-                <p id="noPublish__comment" v-if="toSeeComment === true && comments.length === 0">Aucun commentaire !</p>
+                <p id="noPublish__comment" v-if="toSeeComment === true && post.Comments.length === 0">Aucun commentaire !</p>
             </div>        
         </div>
         <p id="noPublish__post" v-if="posts.length === 0">Aucune publication à afficher... A vous de jouer !</p>
@@ -75,9 +75,6 @@ export default {
             image: '',
             description: '',
             comments: [],
-            comment: '',
-            content: '',
-            isDisplay: false,
             toSeeComment: false,
             toClickComment: true,
         }
@@ -90,12 +87,12 @@ export default {
         }
         })
         .then((res) => {
-        console.log(res)
-        this.username = res.data.username
-        this.avatar = res.data.avatar
+            console.log(res)
+            this.username = res.data.username
+            this.avatar = res.data.avatar
         })
         .catch((err) => {
-        console.log(err)
+            console.log(err)
         });
 
         this.axios.get('http://localhost:3000/api/post', {
@@ -105,18 +102,22 @@ export default {
         })
         .then((res) => {
             console.log(res)
-            this.posts = res.data 
+            this.posts = res.data.map(d => {
+                d.isDisplay = false;
+                d.commentContent = '';
+                return d;
+            })
         })
         .catch((err) => {
             console.log(err)
-        });
-
-        
+        });        
     },
+
     methods: {
         dateFormat(date) {
             return moment(date).format('DD/MM/YY à HH:mm')
         },
+
         deletePost(id) {
             this.axios.delete('http://localhost:3000/api/post/' + id, {
                 headers: {
@@ -131,18 +132,19 @@ export default {
                 console.log(err)
             })
         },
-        show(){
-            this.isDisplay = true
+
+        show(post) {
+            post.isDisplay = true,
+            post.commentContent = ''
         },
-        createComment(id) {
-            if (this.content === '') {
-                alert('aucun commentaire a envoyer !')
+
+        createComment(post) {
+            if (post.commentContent === '') {
+                alert('Aucun commentaire à envoyer !')
             } 
             else {
-                this.axios.post('http://localhost:3000/api/comment/', {
-                    userId: this.userId,
-                    content: this.content,
-                    postId: id
+                this.axios.post('http://localhost:3000/api/post/' + post.id + '/comment/', {
+                    content: post.commentContent,
                 }, 
                 { 
                     headers: {
@@ -158,6 +160,7 @@ export default {
                 })
             }
         },
+
         deleteComment(id) {
             this.axios.delete('http://localhost:3000/api/comment/' + id, {
                 headers: {
@@ -172,21 +175,12 @@ export default {
                 console.log(err)
             })
         },
+
         viewComment() {
-            this.axios.get('http://localhost:3000/api/comment', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then((res) => {
-                this.comments = res.data;
-                this.toClickComment = false
-                this.toSeeComment = true
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            this.toClickComment = false
+            this.toSeeComment = true
         },
+
         hideComment(){
             this.toSeeComment = false
             this.toClickComment = true

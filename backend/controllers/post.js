@@ -7,7 +7,7 @@ exports.createPost = (req, res, next) => {
         imagePost = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     }
     db.Post.create({
-        userId: req.body.userId,
+        userId: req.userId,
         description: req.body.description,
         image: imagePost,
     })
@@ -25,7 +25,14 @@ exports.getAllPost = (req, res, next) => {
     db.Post.findAll({
         order: [["createdAt", "DESC"]],
         include: [{
-            model: db.User
+            model: db.User,
+            attributes: { exclude: ['password']}
+        }, {
+            model: db.Comment,
+            include: [{
+                model: db.User,
+                attributes: { exclude: ['password']}
+            }]
         }]
     })
         .then((post) => res.status(200).json(post))
