@@ -3,7 +3,7 @@
         <div id="post" v-for="post in posts" :key="post.id">
             <div id="post__container">
                 <div id="post__user">
-                    <img v-if="post.User.avatar != ''" :src="post.User.avatar" alt="avatar">
+                    <img v-if="post.User.avatar != ''" :src="post.User.avatar" alt="photo de profil">
                     <img v-else src="../assets/avatar.png" alt="avatar">
                     <div id="info">
                         <p id="name">{{ post.User.username }}</p>
@@ -18,27 +18,12 @@
                 <p>{{ post.description }}</p>
                 <img v-if="post.image != ''" :src="post.image" alt="image du post">
             </div>
-            <div id="post__comment">
-                <p id="viewComment" @click="viewComment()" v-if="toClickComment === true">Voir les commentaires</p>
-                <p id="viewComment" @click="hideComment()" v-else>Cacher les commentaires</p>             
-                <button id="newComment" @click="show(post)">Commenter</button>     
+            <div id="post__comment">               
+                <button id="viewComment" @click="show(post)" v-if="post.isDisplay">Cacher les commentaires</button>
+                <button id="viewComment" @click="show(post)" v-else>Voir les commentaires</button>
             </div>
 
-            <div id="comment" v-if="post.isDisplay">
-                <div id="comment__user">
-                    <img v-if="avatar != ''" :src="avatar" class="avatar" alt="photo de profil"> 
-                    <img v-else src="../assets/avatar.png" class="avatar" alt="avatar">
-                    <p id="name">{{ username }}</p>
-                </div>
-                <form id="comment__content">
-                    <input v-model="post.commentContent" type="text" aria-label="commentaire" placeholder="Votre commentaire...">
-                    <button @click="createComment(post)" aria-label="publier commentaire">
-                        <i class="far fa-paper-plane"></i>
-                    </button>
-                </form>               
-            </div>
-
-            <div id="viewComment" v-if="toSeeComment === true">
+            <div id="viewComment" v-if="post.isDisplay">
                 <div id="viewComment__comment" v-for="comment in post.Comments" :key="comment.id">                   
                     <div id="viewComment__user">
                         <img v-if="comment.User.avatar" :src="comment.User.avatar" alt="photo de profil">
@@ -53,7 +38,23 @@
                         <i class="fa fa-trash" v-if="comment.userId == userId || isAdmin == 'true'" @click="deleteComment(comment.id)" aria-label="supprimer comment"></i>     
                     </div>
                 </div>
-                <p id="noPublish__comment" v-if="toSeeComment === true && post.Comments.length === 0">Aucun commentaire !</p>
+                
+                <p id="noPublish__comment" v-if="post.isDisplay && post.Comments.length === 0">Aucun commentaire...</p>
+            
+                <div id="comment">
+                    <div id="comment__user">
+                        <img v-if="avatar != ''" :src="avatar" class="avatar" alt="photo de profil"> 
+                        <img v-else src="../assets/avatar.png" class="avatar" alt="avatar">
+                        <p id="name">{{ username }}</p>
+                    </div>
+                    <form id="comment__content">
+                        <input v-model="post.commentContent" type="text" aria-label="commentaire" placeholder="Votre commentaire...">
+                        <button @click="createComment(post)" aria-label="publier commentaire">
+                            <i class="far fa-paper-plane"></i>
+                        </button>
+                    </form>               
+                </div>
+            
             </div>        
         </div>
         <p id="noPublish__post" v-if="posts.length === 0">Aucune publication à afficher... A vous de jouer !</p>
@@ -75,8 +76,6 @@ export default {
             image: '',
             description: '',
             comments: [],
-            toSeeComment: false,
-            toClickComment: true,
         }
     },
     mounted() {
@@ -134,7 +133,7 @@ export default {
         },
 
         show(post) {
-            post.isDisplay = true,
+            post.isDisplay =! post.isDisplay
             post.commentContent = ''
         },
 
@@ -175,16 +174,6 @@ export default {
                 console.log(err)
             })
         },
-
-        viewComment() {
-            this.toClickComment = false
-            this.toSeeComment = true
-        },
-
-        hideComment(){
-            this.toSeeComment = false
-            this.toClickComment = true
-        }
     },
 }
 </script>
@@ -260,34 +249,17 @@ export default {
         &__comment {
             display: flex;
             justify-content: flex-end;
-            @media screen and (max-width: 450px) {
-                justify-content: space-between;     
-            }
             #viewComment {
-                margin: 8px;
-                color: rgb(250, 231, 234);
+                background: transparent;
+                border: transparent;
+                color: white;
+                margin-top: 8px;
+                padding: 2px;
                 font-weight: bold;
-                font-size: 14px;
-                text-shadow: 1px 2px 4px #69101f;
+                font-size: 13px;
+                text-shadow: 1px 2px 4px black;
                 border-bottom: 1px dotted white;
                 cursor: pointer;
-                @media screen and (max-width: 380px) {
-                    font-size: 12px;     
-                }
-            }
-            #newComment {
-                cursor: pointer;
-                height: 100%;
-                border: 1px dotted red;
-                padding: 8px;
-                background: rgb(250, 231, 234);
-                font-weight: bold;
-                font-size: 14px;
-                color: #94142A;
-                border-radius: 5px;
-                @media screen and (max-width: 450px) {
-                    font-size: 12px;     
-                }
                 &:hover {
                     opacity: 0.8;
                 }
@@ -409,8 +381,11 @@ export default {
             display: flex;
             justify-content: center; 
             padding: 10px; 
-            margin-top: 5px;
-            border: 1px solid white; 
+            margin: 10px 20px 0 20px;
+            border: 1px solid white;
+            @media screen and (max-width: 550px) {
+                margin: 5px 0;     
+            }
         }
         &__post {
             display: flex;

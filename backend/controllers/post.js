@@ -30,6 +30,7 @@ exports.getAllPost = (req, res, next) => {
         }, {
             model: db.Comment,
             include: [{
+                order: [["createdAt", "ASC"]],
                 model: db.User,
                 attributes: { exclude: ['password']}
             }]
