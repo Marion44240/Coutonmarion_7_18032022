@@ -34,6 +34,11 @@ exports.getAllPost = (req, res, next) => {
                 model: db.User,
                 attributes: { exclude: ['password']}
             }]
+        }, {
+            model: db.Like,
+            include: [{
+                model: db.User
+            }]
         }]
     })
         .then((post) => res.status(200).json(post))
