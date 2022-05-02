@@ -18,9 +18,15 @@
                 <p>{{ post.description }}</p>
                 <img v-if="post.image != ''" :src="post.image" alt="image du post">
             </div>
-            <div id="post__comment">               
-                <button id="viewComment" @click="show(post)" v-if="post.isDisplay">Cacher les commentaires</button>
-                <button id="viewComment" @click="show(post)" v-else>Voir les commentaires</button>
+            <div id="post__comment">
+                <div id="likeComment">
+                    <i id="like" @click="likePost(post)" class="fas fa-thumbs-up" aria-label="like post"></i>
+                    <span>{{ post.Likes.length }}</span>
+                </div>     
+                <button id="viewComment" @click="show(post)" v-if="post.isDisplay">Fermer</button>
+                <button id="viewComment" @click="show(post)" v-else>
+                    {{ post.Comments.length }} commentaire<span v-if="post.Comments.length > 1">s</span>
+                </button>
             </div>
 
             <div id="viewComment" v-if="post.isDisplay">
@@ -76,6 +82,7 @@ export default {
             image: '',
             description: '',
             comments: [],
+            likes: [],
         }
     },
     mounted() {
@@ -109,7 +116,7 @@ export default {
         })
         .catch((err) => {
             console.log(err)
-        });        
+        });       
     },
 
     methods: {
@@ -174,6 +181,45 @@ export default {
                 console.log(err)
             })
         },
+
+        likePost(post) {                                             
+            if(post.Likes.find(d => d.userId == this.userId)) {
+                this.like = false  
+                this.axios.post('http://localhost:3000/api/post/' + post.id + '/like', {
+                    like: this.like,
+                },{
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(() => {
+                    alert("Like supprimé !");
+                    window.location.reload();
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            } 
+            else {
+                this.like = true                  
+                this.axios.post('http://localhost:3000/api/post/' + post.id + '/like', {
+                    like: this.like,
+                },{
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(() => {
+                    alert("Like ajouté !");
+                    window.location.reload();
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }           
+        },
     },
 }
 </script>
@@ -227,7 +273,7 @@ export default {
                 cursor: pointer;
                 color: #94142A;
                 &:hover {
-                    color:rgb(250, 231, 234)
+                    color: white;
                 }
             }
         }
@@ -248,7 +294,18 @@ export default {
         }
         &__comment {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            #likeComment {
+                display: flex;
+                gap: 5px;
+                color: white;
+                cursor: pointer;
+                margin: 10px 0 0 3px;
+                font-size: 14px;
+                i:hover {
+                    color: black;
+                }
+            }
             #viewComment {
                 background: transparent;
                 border: transparent;
