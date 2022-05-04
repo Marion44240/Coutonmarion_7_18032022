@@ -20,7 +20,8 @@
             </div>
             <div id="post__comment">
                 <div id="likeComment">
-                    <i id="like" @click="likePost(post)" class="fas fa-thumbs-up" aria-label="like post"></i>
+                    <i id="likeTrue" @click="likePost(post)" v-if="post.liked == true" class="fas fa-thumbs-up" aria-label="like post"></i>
+                    <i id="likeFalse" @click="likePost(post)" v-else class="fas fa-thumbs-up" aria-label="like post"></i>
                     <span>{{ post.Likes.length }}</span>
                 </div>     
                 <button id="viewComment" @click="show(post)" v-if="post.isDisplay">Fermer</button>
@@ -110,6 +111,8 @@ export default {
             this.posts = res.data.map(d => {
                 d.isDisplay = false;
                 d.commentContent = '';
+                d.Comments.sort((a, b) => (a.id - b.id));
+                d.liked = d.Likes.some(like => like.userId == this.userId)
                 return d;
             })
         })
@@ -296,27 +299,36 @@ export default {
         &__comment {
             display: flex;
             justify-content: space-between;
+            margin-top: 8px;
             #likeComment {
                 display: flex;
-                gap: 5px;
+                padding: 2px;
                 color: white;
                 cursor: pointer;
-                margin: 10px 0 0 3px;
                 font-size: 14px;
-                i:hover {
+                span {
+                    font-weight: bold;
+                    text-shadow: 1px 2px 4px black;
+                    padding: 0 6px;
+                }  
+                #likeTrue {
+                    color: rgb(166, 247, 67);
+                    &:hover {
+                        color: black
+                    }
+                }                 
+                #likeFalse:hover {
                     color: black;
-                }
+                }           
             }
             #viewComment {
                 background: transparent;
                 border: transparent;
                 color: white;
-                margin-top: 8px;
                 padding: 2px;
                 font-weight: bold;
                 font-size: 13px;
                 text-shadow: 1px 2px 4px black;
-                border-bottom: 1px dotted white;
                 cursor: pointer;
                 &:hover {
                     opacity: 0.8;
