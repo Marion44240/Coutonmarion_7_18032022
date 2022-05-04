@@ -93,7 +93,6 @@ export default {
         }
         })
         .then((res) => {
-            console.log(res)
             this.username = res.data.username
             this.avatar = res.data.avatar
         })
@@ -125,18 +124,20 @@ export default {
         },
 
         deletePost(id) {
-            this.axios.delete('http://localhost:3000/api/post/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(() => {
-                alert('Votre publication est supprimé !');
-                window.location.reload()
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            if (confirm('Êtes-vous sur de vouloir supprimer la publication ?')) {
+                this.axios.delete('http://localhost:3000/api/post/' + id, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(() => {
+                    alert('Votre publication est supprimé !');
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
         },
 
         show(post) {
@@ -168,18 +169,20 @@ export default {
         },
 
         deleteComment(id) {
-            this.axios.delete('http://localhost:3000/api/comment/' + id, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(() => {
-                alert('Votre commentaire est supprimé !');
-                window.location.reload()
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            if (confirm('Êtes-vous sur de vouloir supprimer le commentaire ?')) {         
+                this.axios.delete('http://localhost:3000/api/comment/' + id, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(() => {
+                    alert('Votre commentaire est supprimé !');
+                    window.location.reload()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
         },
 
         likePost(post) {                                             
@@ -195,7 +198,6 @@ export default {
                 .then(() => {
                     alert("Like supprimé !");
                     window.location.reload();
-
                 })
                 .catch((err) => {
                     console.log(err)
@@ -213,7 +215,6 @@ export default {
                 .then(() => {
                     alert("Like ajouté !");
                     window.location.reload();
-
                 })
                 .catch((err) => {
                     console.log(err)

@@ -123,19 +123,21 @@ export default {
 
         deleteUser() {
             const id = localStorage.getItem('userId')
-            this.axios.delete(`http://localhost:3000/api/auth/${id}`, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(() => {
-                alert('Votre compte est supprimé !');
-                localStorage.clear()
-                this.$router.push('/');
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            if (confirm('Êtes-vous sur de vouloir supprimer votre compte ?')) {
+                this.axios.delete(`http://localhost:3000/api/auth/${id}`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(() => {
+                    alert('Votre compte est supprimé !');
+                    localStorage.clear()
+                    this.$router.push('/');
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
         }
     },
 }
