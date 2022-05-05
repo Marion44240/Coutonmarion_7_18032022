@@ -3,7 +3,7 @@
 
 ---
 
-#### Technologie :
+### Technologie :
 
 * Node.js
 * Express.js
@@ -11,11 +11,11 @@
 * MySQL
 * Sequelize
 
-#### Pour lancer et tester l'application :
+### Pour lancer et tester l'application :
 
 Clonez le repository github
 
-##### Back-end
+#### Back-end
 
 - Dans le dossier backend config/config.json modifier les données en ajoutant vos informations de connexion à votre base de données : 
 
@@ -41,7 +41,7 @@ nodemon server
 
 - Le serveur doit fontionner sur http://localhost:3000/
 
-##### Front-end
+#### Front-end
 
 - Dans le terminal se placer dans le dossier frontend :
 
