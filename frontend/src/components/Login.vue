@@ -16,6 +16,8 @@
             <span @click="toggleShow" class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }">
             </span>
         </div>
+        <div id="error">{{ error }}</div>
+
         <button aria-label="connexion" type="submit">Se connecter</button>
     </form>
 </div>
@@ -28,7 +30,8 @@ export default {
         return {
             email: '',
             password: '',
-            showPassword: false
+            showPassword: false,
+            error: ''
         }
     },
     methods: {
@@ -50,6 +53,7 @@ export default {
             }) 
             .catch((error) => {
                 console.log('Utilisateur non trouvé !', error);
+                this.error = error.response.data.error
             })
             e.preventDefault();
         }
@@ -97,6 +101,12 @@ form {
                 color: red;
             }
         }
+    }
+    #error {
+        display: flex;
+        justify-content: center;
+        font-size: 11px;
+        color: rgb(183, 9, 9);
     }
     button {
         margin: 20px 0;

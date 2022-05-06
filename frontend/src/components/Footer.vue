@@ -32,6 +32,7 @@ footer { display: flex;
         }
         
         span {
+            padding: 2px;
             font-size: 25px;
             color: white;
         }

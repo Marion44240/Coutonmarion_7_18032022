@@ -261,7 +261,7 @@ main {
             #error {
                 display: flex;
                 justify-content: center;
-                font-size: 10px;
+                font-size: 12px;
             }
         }
         #button {
