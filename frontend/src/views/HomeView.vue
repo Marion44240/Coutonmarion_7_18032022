@@ -8,19 +8,21 @@
 
             <section id="container">
                 <div id="container__auth">
+                  <div id="img">
                     <img src="../assets/icon-above-font.png" alt="Logo Groupomania" />
-                    <div v-if="auth" class="login">
-                        <LoginHome />
-                        <p> Vous n'avez pas de compte ? 
-                            <span @click="auth = !auth">Inscrivez-vous</span>
-                        </p>
-                    </div>
-                    <div v-else class="signup">                        
-                        <SignupHome />
-                        <p> Vous avez un compte ?
-                            <span @click="auth = !auth">Connectez-vous</span>
-                        </p>
-                    </div>
+                  </div>
+                  <div v-if="auth" class="login">
+                      <LoginHome />
+                      <p> Vous n'avez pas de compte ? 
+                          <span @click="auth = !auth">Inscrivez-vous</span>
+                      </p>
+                  </div>
+                  <div id="loginSignup" v-else class="signup">                        
+                      <SignupHome />
+                      <p> Vous avez un compte ?
+                          <span @click="auth = !auth">Connectez-vous</span>
+                      </p>
+                  </div>
                 </div>
             </section>
         </main>
@@ -80,8 +82,15 @@ main {
       @media screen and (max-width: 500px){
         margin: 5px 5px 20px ;
       }
-      img {
-        width: 100%;
+      #img {
+        display: flex;
+        align-items: center;
+        padding: 8px 0 0 4px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
       p {
           text-align: center;

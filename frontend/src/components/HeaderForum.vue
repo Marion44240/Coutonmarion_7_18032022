@@ -59,6 +59,8 @@ header {
 
   img {
     width: 150px;
+    height: 27px;
+    object-fit: cover;
   }
 }
 #navbar {
