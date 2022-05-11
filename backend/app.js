@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 // Gére les ressources images de façon statique d'une requête vers le dossier Images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Création et identification utilisateur
+// Chemin d'accés à nos routes utilisateur, post et commentaire
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
