@@ -163,7 +163,12 @@ export default {
                 })
                 .then(() => {
                     alert('Commentaire créé')
-                    window.location.reload()
+                    post.Comments.push({
+                        User: { username: this.username,
+                                avatar: this.avatar },
+                        content: post.commentContent,
+                    })
+                    window.location.reload()             
                 })
                 .catch((err) => {
                     console.log(err)
