@@ -111,6 +111,7 @@ export default {
                     }
                 })
             .then((res) => {
+                alert('Vous avez modifié votre profil')
                 this.uersname = res.data.username,
                 this.email = res.data.email,
                 window.location.reload();
